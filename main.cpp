@@ -11,6 +11,7 @@
 float msTime = 0.00f, qsTime = 0.00f;
 
 //IT'S VERY IMPORTANT THAT THE TWO TIMER CLASSES ARE THE ONLY ENTITIES WHO CHANGE THE TWO GLOBAL VARIABLES.
+//I used a YouTube video to help me with the timer. https://www.youtube.com/watch?v=oEx5vGNFrLk&list=WL&index=8&t=512s
 //This class times merge sort.
 class msTimer
 {
@@ -131,6 +132,7 @@ void quickSort(std::vector<std::tuple<std::string, std::string, int, std::string
 int main()
 {
     //This following chunk of code takes the 100k data points from playerList.txt and parses them into two separate vector, one for merge sort and one for quick sort.
+    //I used a YouTube video to help me with file i/o. https://www.youtube.com/watch?v=RHngWtyEtTs&list=WL&index=9&t=564s
     std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> msPlayers;
     std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> qsPlayers;
     std::string name, school, position, conference, tempRank, line;
@@ -154,6 +156,7 @@ int main()
     inFile.close();
 
     //Two separate threads do the sorting for each vector, one does merge sort and the other does quick sort.
+    //I used this website to help me multithreading and lambda functions. https://www.bogotobogo.com/cplusplus/C11/3_C11_Threading_Lambda_Functions.php
     std::thread ms
     ([&msPlayers](){
         msTimer timer;
