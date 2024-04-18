@@ -51,41 +51,59 @@ public:
     }
 };
 
-//The following two functions are for merge sort and are taken from the discussion slides, "Disscusion 12: Final Review", #32.
-std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> merge(std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> &left,
-                                                                                       std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> &right)
+//The following two functions are for merge sort and are taken from Professor's slides, "6-Sorting", #89 & #90.
+void merge(std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> &vec, int left, int mid, int right)
 {
-    std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> result;
-    while(!left.empty() && !right.empty())
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> X(n1);
+    std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> Y(n2);
+    for(int i = 0; i < n1; i++)
     {
-        if(std::get<2>(left[0]) <= std::get<2>(right[0]))
+        X[i] = vec[left + i];
+    }
+    for(int j = 0; j < n2; j++)
+    {
+        Y[j] = vec[mid + 1 + j];
+    }
+    int i = 0, j = 0, k = left;
+    while(i < n1 && j < n2)
+    {
+        if(std::get<2>(X[i]) <= std::get<2>(Y[j]))
         {
-            result.push_back(left[0]);
-            left.erase(left.begin());
+            vec[k] = X[i];
+            i++;
         }
         else
         {
-            result.push_back(right[0]);
-            right.erase(right.begin());
+            vec[k] = Y[j];
+            j++;
         }
+        k++;
     }
-    result.insert(result.end(), left.begin(), left.end());
-    result.insert(result.end(), right.begin(), right.end());
-    return result;
+    while(i < n1)
+    {
+        vec[k] = X[i];
+        i++;
+        k++;
+    }
+    while(j < n2)
+    {
+        vec[k] = Y[j];
+        j++;
+        k++;
+    }
 }
 
-std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> mergeSort(std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> &vec)
+void mergeSort(std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> &vec, int left, int right)
 {
-    if(vec.size() <= 1)
+    if(left < right)
     {
-        return vec;
+        int mid = left + (right - left) / 2;
+        mergeSort(vec, left, mid);
+        mergeSort(vec, mid + 1, right);
+        merge(vec, left, mid, right);
     }
-    int mid = (int) vec.size()/2;
-    std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> left(vec.begin(), vec.begin() + mid);
-    std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> right(vec.begin() + mid, vec.end());
-    left = mergeSort(left);
-    right = mergeSort(right);
-    return merge(left, right);
 }
 
 //The following two functions are for quick sort and are taken from Professor's slides, "6-Sorting", #122.
@@ -159,19 +177,27 @@ int main()
 
     //Two separate threads do the sorting for each vector, one does merge sort and the other does quick sort.
     //I used this website to help me with multithreading and lambda functions. https://www.bogotobogo.com/cplusplus/C11/3_C11_Threading_Lambda_Functions.php
-    /*std::thread ms
+    std::thread ms
     ([&msPlayers](){
         msTimer timer;
-        msPlayers = mergeSort(msPlayers);
-    });*/
+        mergeSort(msPlayers, 0, (int) msPlayers.size() - 1);
+    });
 
     std::thread qs
     ([&qsPlayers](){
         qsTimer timer;
         quickSort(qsPlayers, 0, (int) qsPlayers.size() - 1);
     });
-    //ms.join();
+    ms.join();
     qs.join();
+
+    std::cout << msTime << " " << msPlayers.size() << "\n";
+    std::cout << qsTime << " " << qsPlayers.size() << "\n";
+    for(auto i: msPlayers)
+    {
+        std::cout << std::get<2>(i) << "\n";
+    }
+
 
     string input;
     string input_char;
