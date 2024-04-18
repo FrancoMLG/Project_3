@@ -156,7 +156,7 @@ int main()
     inFile.close();
 
     //Two separate threads do the sorting for each vector, one does merge sort and the other does quick sort.
-    //I used this website to help me multithreading and lambda functions. https://www.bogotobogo.com/cplusplus/C11/3_C11_Threading_Lambda_Functions.php
+    //I used this website to help me with multithreading and lambda functions. https://www.bogotobogo.com/cplusplus/C11/3_C11_Threading_Lambda_Functions.php
     std::thread ms
     ([&msPlayers](){
         msTimer timer;
