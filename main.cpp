@@ -4,51 +4,43 @@
 #include <sstream>
 #include <fstream>
 #include <chrono>
-#include <thread>
 using namespace std;
 
-//Global varables that keep track of the time for the time it takes for merge sort (msTime) and the time it takes for
-//quick sort (qsTime).
-float msTime = 0.00f, qsTime = 0.00f;
-
-//IT'S VERY IMPORTANT THAT THE TWO TIMER CLASSES ARE THE ONLY ENTITIES WHO CHANGE THE TWO GLOBAL VARIABLES.
 //I used a YouTube video to help me with the timer. https://www.youtube.com/watch?v=oEx5vGNFrLk&list=WL&index=8&t=512s
-//This class times merge sort.
-class msTimer
+//This class acts as the timer.
+class Timer
 {
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> START, STOP;
     std::chrono::duration<float> TIME{};
-public:
-    msTimer()
-    {
-        START = std::chrono::high_resolution_clock::now();
-    }
-    ~msTimer()
-    {
-        STOP = std::chrono::high_resolution_clock::now();
-        TIME = STOP - START;
-        msTime = TIME.count();
-    }
-};
+    bool isRunning;
+    float finalTime = 0.00f;
 
-//This class times quick sort.
-class qsTimer
-{
-private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> START, STOP;
-    std::chrono::duration<float> TIME{};
 public:
-    qsTimer()
+    Timer()
     {
-        START = std::chrono::high_resolution_clock::now();
+        isRunning = false;
     }
-    ~qsTimer()
+    void start()
+    {
+        if(!isRunning)
+        {
+            START = std::chrono::high_resolution_clock::now();
+            isRunning = true;
+        }
+    }
+    void stop()
     {
         STOP = std::chrono::high_resolution_clock::now();
         TIME = STOP - START;
-        qsTime = TIME.count();
+        finalTime = TIME.count();
+        isRunning = false;
     }
+    float getTime() const
+    {
+        return finalTime;
+    }
+    ~Timer() = default;
 };
 
 //The following two functions are for merge sort and are taken from Professor's slides, "6-Sorting", #89 & #90.
@@ -97,6 +89,7 @@ void merge(std::vector<std::tuple<std::string, std::string, int, std::string, st
 
 void mergeSort(std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> &vec, int left, int right)
 {
+    //timer.start();
     if(left < right)
     {
         int mid = left + (right - left) / 2;
@@ -157,6 +150,7 @@ int main()
     std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> qsPlayers;
     std::string name, school, position, conference, tempRank, line;
     int rank;
+    float msTime, qsTime;
     std::ifstream inFile;
     std::stringstream inLine;
     inFile.open("playerList.txt");
@@ -175,29 +169,19 @@ int main()
     }
     inFile.close();
 
-    //Two separate threads do the sorting for each vector, one does merge sort and the other does quick sort.
-    //I used this website to help me with multithreading and lambda functions. https://www.bogotobogo.com/cplusplus/C11/3_C11_Threading_Lambda_Functions.php
-    std::thread ms
-    ([&msPlayers](){
-        msTimer timer;
-        mergeSort(msPlayers, 0, (int) msPlayers.size() - 1);
-    });
+    Timer timer;
 
-    std::thread qs
-    ([&qsPlayers](){
-        qsTimer timer;
-        quickSort(qsPlayers, 0, (int) qsPlayers.size() - 1);
-    });
-    ms.join();
-    qs.join();
-/*
+    timer.start();
+    mergeSort(msPlayers, 0, (int) msPlayers.size() - 1);
+    timer.stop();
+    msTime = timer.getTime();
     std::cout << msTime << " " << msPlayers.size() << "\n";
-    std::cout << qsTime << " " << qsPlayers.size() << "\n";
-    for(auto i: msPlayers)
-    {
-        std::cout << std::get<2>(i) << "\n";
-    }*/
 
+    timer.start();
+    quickSort(qsPlayers, 0, (int) qsPlayers.size() - 1);
+    timer.stop();
+    qsTime = timer.getTime();
+    std::cout << qsTime << " " << qsPlayers.size() << "\n";
 
     string input;
     string input_char;
@@ -272,10 +256,6 @@ int main()
         }
 
     }
-
-
-
-
 
     /*std::cout << msTime << " " << msPlayers.size() << "\n";
     std::cout << qsTime << " " << qsPlayers.size() << "\n";
