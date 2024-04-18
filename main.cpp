@@ -5,6 +5,7 @@
 #include <fstream>
 #include <chrono>
 #include <thread>
+using namespace std;
 
 //Global varables that keep track of the time for the time it takes for merge sort (msTime) and the time it takes for
 //quick sort (qsTime).
@@ -133,6 +134,7 @@ int main()
 {
     //This following chunk of code takes the 100k data points from playerList.txt and parses them into two separate vector, one for merge sort and one for quick sort.
     //I used a YouTube video to help me with file i/o. https://www.youtube.com/watch?v=RHngWtyEtTs&list=WL&index=9&t=564s
+    //Name School Rank Position Division
     std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> msPlayers;
     std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> qsPlayers;
     std::string name, school, position, conference, tempRank, line;
@@ -157,19 +159,80 @@ int main()
 
     //Two separate threads do the sorting for each vector, one does merge sort and the other does quick sort.
     //I used this website to help me with multithreading and lambda functions. https://www.bogotobogo.com/cplusplus/C11/3_C11_Threading_Lambda_Functions.php
-    std::thread ms
+    /*std::thread ms
     ([&msPlayers](){
         msTimer timer;
         msPlayers = mergeSort(msPlayers);
-    });
+    });*/
 
     std::thread qs
     ([&qsPlayers](){
         qsTimer timer;
         quickSort(qsPlayers, 0, (int) qsPlayers.size() - 1);
     });
-    ms.join();
+    //ms.join();
     qs.join();
+
+    string input;
+    string input_char;
+    //std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> player_rank;
+
+    while (true){
+        cout << "Best College Football Players" << endl << "Select one of the sorting choices:" << endl;
+        cout << "1. By School" << endl << "2. By Division" << endl << "3. By Position" << endl << "4. Overall" << endl;
+        getline(cin, input_char);
+        int temp_rank = 1;
+        if (stoi(input_char) == 1){
+            cout << "Input a School: (Ex. University of Florida)" << endl;
+            getline(cin, input);
+            cout << "Top 3 Ranks" << endl;
+
+            for(auto i: qsPlayers)
+            {//Name School Rank Position Division
+                //Check for matching school
+                if ((get<1>(i) == input) and (temp_rank < 4)){
+                    name = get<0>(i);
+                    school = get<1>(i);
+                    rank = temp_rank;
+                    position = get<3>(i);
+                    conference = get<4>(i);
+                    cout << "Rank: " << rank << endl << "Name: " << name << endl << "Position: " << position << endl;
+                    cout << "School: " << school << endl << "Division: " << conference << endl << endl;
+                    temp_rank += 1;
+                }
+
+            }
+            if (temp_rank == 1){
+                cout << "School not Found" << endl;
+            }
+        }
+        if (stoi(input_char) == 2){
+            cout << "Input a Division: (Ex. SEC)" << endl;
+            cin >> input;
+            cout << "Input: " << input << endl;
+        }
+        if (stoi(input_char) == 3){
+            cout << "Input a Position: (Ex. QB)" << endl;
+            cin >> input;
+            cout << "Input: " << input << endl;
+        }
+        if (stoi(input_char) == 4){
+            cout << "done" << endl;
+        }
+
+    }
+
+    /*Best College Football Players
+    1. By Team
+    Input a Team: (Ex. Florida Gators)
+    2. By Division
+    Input a Division: (Ex. ACC)
+    3. By Position
+    Input a Position: (Ex. Quarterback)
+    4. Overall*/
+
+
+
 
     /*std::cout << msTime << " " << msPlayers.size() << "\n";
     std::cout << qsTime << " " << qsPlayers.size() << "\n";
