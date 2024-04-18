@@ -179,13 +179,13 @@ int main()
 
     while (true){
         cout << "Best College Football Players" << endl << "Select one of the sorting choices:" << endl;
-        cout << "1. By School" << endl << "2. By Division" << endl << "3. By Position" << endl << "4. Overall" << endl;
+        cout << "1. By School" << endl << "2. By Division" << endl << "3. By Position" << endl << "4. Overall" << endl << "5. Close Program" << endl;
         getline(cin, input_char);
         int temp_rank = 1;
         if (stoi(input_char) == 1){
             cout << "Input a School: (Ex. University of Florida)" << endl;
             getline(cin, input);
-            cout << "Top 3 Ranks" << endl;
+            //cout << "Top 3 Ranks" << endl;
 
             for(auto i: qsPlayers)
             {//Name School Rank Position Division
@@ -206,18 +206,24 @@ int main()
                 cout << "School not Found" << endl;
             }
         }
-        if (stoi(input_char) == 2){
+        else if (stoi(input_char) == 2){
             cout << "Input a Division: (Ex. SEC)" << endl;
             cin >> input;
             cout << "Input: " << input << endl;
         }
-        if (stoi(input_char) == 3){
+        else if (stoi(input_char) == 3){
             cout << "Input a Position: (Ex. QB)" << endl;
             cin >> input;
             cout << "Input: " << input << endl;
         }
-        if (stoi(input_char) == 4){
+        else if (stoi(input_char) == 4){
             cout << "done" << endl;
+        }
+        else if (stoi(input_char) == 5){
+            break;
+        }
+        else{
+            cout << "Invalid Input" << endl << endl;
         }
 
     }
