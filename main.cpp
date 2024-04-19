@@ -190,8 +190,14 @@ int main()
     string input_char;
 
     while (true){
-        cout << "\n" << "Best College Football Players" << endl << "Select one of the sorting choices:" << endl;
-        cout << "1. By School" << endl << "2. By Conference" << endl << "3. By Position" << endl << "4. Overall" << endl << "5. Close Program" << endl;
+        cout << "\n" << "Best College Football Players" << endl;
+        cout << "Select one of the sorting choices:" << endl;
+        cout << "1. By School" << endl;
+        cout << "2. By Conference" << endl;
+        cout << "3. By Position" << endl;
+        cout << "4. Overall" << endl;
+        cout << "5. Search" << endl;
+        cout << "6. Close Program" << endl;
         getline(cin, input_char);
 
         if (stoi(input_char) == 1){
@@ -243,7 +249,7 @@ int main()
 
             for(auto i: qsPlayers)
             {//Name School Rank Position Division
-                //Check for matching school
+                //Check for matching conference
                 if ((get<4>(i) == input) and (temp_rank < 4)){
                     name = get<0>(i);
                     school = get<1>(i);
@@ -273,7 +279,7 @@ int main()
                     rank = get<2>(player_rank[i]);
                     position = get<3>(player_rank[i]);
                     conference = get<4>(player_rank[i]);
-                    cout << "School Rank: " << (i + 1) << endl;
+                    cout << "Conference Rank: " << (i + 1) << endl;
                     cout << "Overall Rank: " << rank << endl;
                     cout << "Name: " << name << endl;
                     cout << "Position: " << position << endl;
@@ -285,7 +291,44 @@ int main()
             //cout << "Input: " << input << endl;
         else if (stoi(input_char) == 3){
             cout << "Input a Position: (Ex. QB)" << endl;
-            cin >> input;
+            getline(cin, input);
+            std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> player_rank;
+            int temp_rank = 1;
+
+            for(auto i: qsPlayers)
+            {//Name School Rank Position Division
+                //Check for matching position
+                if ((get<3>(i) == input) and (temp_rank < 4)){
+                    name = get<0>(i);
+                    school = get<1>(i);
+                    rank = get<2>(i);
+                    position = get<3>(i);
+                    conference = get<4>(i);
+                    player_rank.emplace_back(name, school, rank, position, conference);
+                    temp_rank += 1;
+                }
+            }
+
+            if(temp_rank == 1) {
+                cout << "Position not Found" << endl;
+            }
+            else {
+                cout << "--Top 3 Players at the " << input << " position--" << endl;
+                for(unsigned int i = 0; i < 3; i++) {
+                    name = get<0>(player_rank[i]);
+                    school = get<1>(player_rank[i]);
+                    rank = get<2>(player_rank[i]);
+                    position = get<3>(player_rank[i]);
+                    conference = get<4>(player_rank[i]);
+
+                    cout << "Position Rank: " << (i + 1) << endl;
+                    cout << "Overall Rank: " << rank << endl;
+                    cout << "Name: " << name << endl;
+                    cout << "Position: " << position << endl;
+                    cout << "School: " << school << endl;
+                    cout << "Conference: " << conference << endl << endl;
+                }
+            }
             //cout << "Input: " << input << endl;
         }
         else if (stoi(input_char) == 4){
@@ -305,7 +348,68 @@ int main()
                 cout << "Conference: " << conference << endl << endl;
             }
         }
-        else if (stoi(input_char) == 5){
+        else if (stoi(input_char) == 5) {
+            cout << "Search by:" << endl;
+            cout << "1. By Name" << endl;
+            cout << "2. By Rank" << endl;
+            cout << "3. Back to Main Menu" << endl;
+
+            string searchInput;
+            getline(cin, searchInput);
+            bool playerFound = false;
+
+            if(stoi(searchInput) == 1) {
+                string nameSearch;
+
+                cout << "Input a Name: " << endl;
+                getline(cin, nameSearch);
+
+                for(auto i : qsPlayers) {
+                    if(get<0>(i) == nameSearch) {
+                        playerFound = true;
+                        name = get<0>(i);
+                        school = get<1>(i);
+                        rank = get<2>(i);
+                        position = get<3>(i);
+                        conference = get<4>(i);
+
+                        cout << name << " Statistics:" << endl;
+                        cout << "Overall Rank: " << rank << endl;
+                        cout << "School: " << school << endl;
+                        cout << "Position: " << position << endl;
+                        cout << "Conference: " << conference << endl;
+                    }
+                }
+
+                if(!playerFound) {
+                    cout << "Player not Found" << endl;
+                }
+            }
+            else if(stoi(searchInput) == 2) {
+                string rankSearch;
+
+                cout << "Input a Rank: " << endl;
+                getline(cin, rankSearch);
+
+                int rankNum = stoi(rankSearch);
+
+                if (rankNum <= 100000 && rankNum > 0) {
+                    cout << "Player at Rank " << rankSearch << ":" << endl;
+                    cout << "Name: " << get<0>(qsPlayers[rankNum - 1]) << endl;
+                    cout << "School: " << get<1>(qsPlayers[rankNum - 1]) << endl;
+                    cout << "Position: " << get<3>(qsPlayers[rankNum - 1]) << endl;
+                    cout << "Conference: " << get<4>(qsPlayers[rankNum - 1]) << endl;
+
+                }
+                else {
+                    cout << "Rank not Found" << endl;
+                }
+            }
+            else if(stoi(searchInput) == 3) {
+                continue;
+            }
+        }
+        else if (stoi(input_char) == 6){
             break;
         }
         else{
