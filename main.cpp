@@ -156,7 +156,7 @@ int main()
     float msTime, qsTime;
     std::ifstream inFile;
     std::stringstream inLine;
-    inFile.open("playerList.txt");
+    inFile.open("../playerList.txt");
     while(std::getline(inFile, line))
     {
         inLine.clear();
@@ -188,16 +188,17 @@ int main()
 
     string input;
     string input_char;
-    std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> player_rank;
 
     while (true){
         cout << "\n" << "Best College Football Players" << endl << "Select one of the sorting choices:" << endl;
         cout << "1. By School" << endl << "2. By Conference" << endl << "3. By Position" << endl << "4. Overall" << endl << "5. Close Program" << endl;
         getline(cin, input_char);
-        int temp_rank = 1;
+
         if (stoi(input_char) == 1){
             cout << "Input a School: (Ex. University of Florida)" << endl;
             getline(cin, input);
+            std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> player_rank;
+            int temp_rank = 1;
 
             for(auto i: qsPlayers)
             {//Name School Rank Position Division
@@ -215,7 +216,7 @@ int main()
             if (temp_rank == 1){
                 cout << "School not Found" << endl;
             }
-            else{
+            else {
                 cout << "--Top 3 Players at " << input << "--" << endl;
                 for (unsigned int i = 0; i < 3; i++){
                     //Iterates over the top 3 players in the list
@@ -224,15 +225,64 @@ int main()
                     rank = get<2>(player_rank[i]);
                     position = get<3>(player_rank[i]);
                     conference = get<4>(player_rank[i]);
-                    cout << "School Rank: " << (i + 1) << endl << "Overall Rank: " << rank << endl << "Name: " << name << endl << "Position: " << position << endl;
-                    cout << "School: " << school << endl << "Conference: " << conference << endl << endl;
-                }}}
+                    cout << "School Rank: " << (i + 1) << endl;
+                    cout << "Overall Rank: " << rank << endl;
+                    cout << "Name: " << name << endl;
+                    cout << "Position: " << position << endl;
+                    cout << "School: " << school << endl;
+                    cout << "Conference: " << conference << endl << endl;
+                }
+            }
+        }
 
         else if (stoi(input_char) == 2){
-            cout << "Input a Conference: (Ex. SEC)" << endl;
-            cin >> input;
-            //cout << "Input: " << input << endl;
+            cout << "Input a Conference: (Ex. Southeastern Conference)" << endl;
+            getline(cin, input);
+            std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> player_rank;
+            int temp_rank = 1;
+
+            for(auto i: qsPlayers)
+            {//Name School Rank Position Division
+                //Check for matching school
+                if ((get<4>(i) == input) and (temp_rank < 4)){
+                    name = get<0>(i);
+                    school = get<1>(i);
+                    rank = get<2>(i);
+                    position = get<3>(i);
+                    conference = get<4>(i);
+                    player_rank.emplace_back(name, school, rank, position, conference);
+                    temp_rank += 1;
+                }
+            }
+
+            if(temp_rank == 1) {
+                cout << "Conference not Found" << endl;
+            }
+            else {
+                cout << "--Top 3 Players from ";
+                if (input == "Independent") {
+                    cout << input << " Schools--" << endl;
+                }
+                else {
+                    cout << "the " << input << "--" << endl;
+                }
+                for (unsigned int i = 0; i < 3; i++){
+                    //Iterates over the top 3 players in the list
+                    name = get<0>(player_rank[i]);
+                    school = get<1>(player_rank[i]);
+                    rank = get<2>(player_rank[i]);
+                    position = get<3>(player_rank[i]);
+                    conference = get<4>(player_rank[i]);
+                    cout << "School Rank: " << (i + 1) << endl;
+                    cout << "Overall Rank: " << rank << endl;
+                    cout << "Name: " << name << endl;
+                    cout << "Position: " << position << endl;
+                    cout << "School: " << school << endl;
+                    cout << "Conference: " << conference << endl << endl;
+                }
+            }
         }
+            //cout << "Input: " << input << endl;
         else if (stoi(input_char) == 3){
             cout << "Input a Position: (Ex. QB)" << endl;
             cin >> input;
@@ -248,9 +298,13 @@ int main()
                 rank = get<2>(qsPlayers[i]);
                 position = get<3>(qsPlayers[i]);
                 conference = get<4>(qsPlayers[i]);
-                cout << "Overall Rank: " << rank << endl << "Name: " << name << endl << "Position: " << position << endl;
-                cout << "School: " << school << endl << "Conference: " << conference << endl << endl;
-            }}
+                cout << "Overall Rank: " << rank << endl;
+                cout << "Name: " << name << endl;
+                cout << "Position: " << position << endl;
+                cout << "School: " << school << endl;
+                cout << "Conference: " << conference << endl << endl;
+            }
+        }
         else if (stoi(input_char) == 5){
             break;
         }
