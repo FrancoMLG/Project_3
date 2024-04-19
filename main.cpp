@@ -31,10 +31,13 @@ public:
     }
     void stop()
     {
-        STOP = std::chrono::high_resolution_clock::now();
-        TIME = STOP - START;
-        finalTime = TIME.count();
-        isRunning = false;
+        if(isRunning)
+        {
+            STOP = std::chrono::high_resolution_clock::now();
+            TIME = STOP - START;
+            finalTime = TIME.count();
+            isRunning = false;
+        }
     }
     float getTime() const
     {
@@ -89,7 +92,6 @@ void merge(std::vector<std::tuple<std::string, std::string, int, std::string, st
 
 void mergeSort(std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> &vec, int left, int right)
 {
-    //timer.start();
     if(left < right)
     {
         int mid = left + (right - left) / 2;
@@ -148,6 +150,7 @@ int main()
     //Name School Rank Position Division
     std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> msPlayers;
     std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> qsPlayers;
+    std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> ssPlayers;
     std::string name, school, position, conference, tempRank, line;
     int rank;
     float msTime, qsTime;
@@ -160,35 +163,35 @@ int main()
         inLine.str(line);
         std::getline(inLine, name, '_');
         std::getline(inLine, school, '_');
+        std::getline(inLine, conference, '_');
         std::getline(inLine, tempRank, '_');
         rank = std::stoi(tempRank);
-        std::getline(inLine, position, '_');
-        std::getline(inLine, conference);
+        std::getline(inLine, position);
         msPlayers.emplace_back(name, school, rank, position, conference);
         qsPlayers.emplace_back(name, school, rank, position, conference);
+        ssPlayers.emplace_back(name, school, rank, position, conference);
     }
     inFile.close();
 
     Timer timer;
-
     timer.start();
     mergeSort(msPlayers, 0, (int) msPlayers.size() - 1);
     timer.stop();
     msTime = timer.getTime();
-    std::cout << msTime << " " << msPlayers.size() << "\n";
+    std::cout << "Merge sort time: " << msTime << " seconds" << "\n";
 
     timer.start();
     quickSort(qsPlayers, 0, (int) qsPlayers.size() - 1);
     timer.stop();
     qsTime = timer.getTime();
-    std::cout << qsTime << " " << qsPlayers.size() << "\n";
+    std::cout << "Quick sort time: " << qsTime << " seconds" << "\n";
 
     string input;
     string input_char;
     std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> player_rank;
 
     while (true){
-        cout << "Best College Football Players" << endl << "Select one of the sorting choices:" << endl;
+        cout << "\n" << "Best College Football Players" << endl << "Select one of the sorting choices:" << endl;
         cout << "1. By School" << endl << "2. By Conference" << endl << "3. By Position" << endl << "4. Overall" << endl << "5. Close Program" << endl;
         getline(cin, input_char);
         int temp_rank = 1;
