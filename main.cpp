@@ -377,7 +377,7 @@ int main()
                         cout << "Overall Rank: " << rank << endl;
                         cout << "School: " << school << endl;
                         cout << "Position: " << position << endl;
-                        cout << "Conference: " << conference << endl;
+                        cout << "Conference: " << conference << endl << endl;
                     }
                 }
 
@@ -398,7 +398,7 @@ int main()
                     cout << "Name: " << get<0>(qsPlayers[rankNum - 1]) << endl;
                     cout << "School: " << get<1>(qsPlayers[rankNum - 1]) << endl;
                     cout << "Position: " << get<3>(qsPlayers[rankNum - 1]) << endl;
-                    cout << "Conference: " << get<4>(qsPlayers[rankNum - 1]) << endl;
+                    cout << "Conference: " << get<4>(qsPlayers[rankNum - 1]) << endl << endl;
 
                 }
                 else {
