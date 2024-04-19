@@ -209,7 +209,7 @@ int main()
             for(auto i: qsPlayers)
             {//Name School Rank Position Division
                 //Check for matching school
-                if ((get<1>(i) == input) and (temp_rank < 4)){
+                if ((get<1>(i) == input)){
                     name = get<0>(i);
                     school = get<1>(i);
                     rank = get<2>(i);
@@ -238,6 +238,8 @@ int main()
                     cout << "School: " << school << endl;
                     cout << "Conference: " << conference << endl << endl;
                 }
+                unsigned int numRanked = player_rank.size();
+                cout << input << " has " << numRanked << " ranked players." << endl;
             }
         }
 
