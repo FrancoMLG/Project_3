@@ -4,6 +4,7 @@
 #include <sstream>
 #include <fstream>
 #include <chrono>
+#include <string>
 using namespace std;
 
 //I used a YouTube video to help me with the timer. https://www.youtube.com/watch?v=oEx5vGNFrLk&list=WL&index=8&t=512s
@@ -141,6 +142,19 @@ void quickSort(std::vector<std::tuple<std::string, std::string, int, std::string
         quickSort(vec, low, pivot - 1);
         quickSort(vec, pivot + 1, high);
     }
+}
+
+bool searchName(string name1, string name2) {
+    unsigned int len1 = name1.size();
+    unsigned int len2 = name2.size();
+    if(len2 >= len1) {
+        for(int i = 0; i < len2 - len1 + 1; i++) {
+            if (name2.substr(i, len1) == name1) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 int main()
@@ -290,7 +304,7 @@ int main()
                 }
             }
         }
-            //cout << "Input: " << input << endl;
+
         else if (stoi(input_char) == 3){
             cout << "Input a Position: (Ex. QB)" << endl;
             getline(cin, input);
@@ -331,8 +345,8 @@ int main()
                     cout << "Conference: " << conference << endl << endl;
                 }
             }
-            //cout << "Input: " << input << endl;
         }
+
         else if (stoi(input_char) == 4){
             //Print top 3 players overall
             cout << "--Top 3 Players Overall--" << endl;
@@ -350,6 +364,7 @@ int main()
                 cout << "Conference: " << conference << endl << endl;
             }
         }
+
         else if (stoi(input_char) == 5) {
             cout << "Search by:" << endl;
             cout << "1. By Name" << endl;
@@ -362,12 +377,13 @@ int main()
 
             if(stoi(searchInput) == 1) {
                 string nameSearch;
+                std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> search_vec;
 
                 cout << "Input a Name: " << endl;
                 getline(cin, nameSearch);
 
                 for(auto i : qsPlayers) {
-                    if(get<0>(i) == nameSearch) {
+                    if(searchName(nameSearch, get<0>(i))) {
                         playerFound = true;
                         name = get<0>(i);
                         school = get<1>(i);
@@ -375,16 +391,46 @@ int main()
                         position = get<3>(i);
                         conference = get<4>(i);
 
-                        cout << name << " Statistics:" << endl;
-                        cout << "Overall Rank: " << rank << endl;
-                        cout << "School: " << school << endl;
-                        cout << "Position: " << position << endl;
-                        cout << "Conference: " << conference << endl << endl;
+                        search_vec.emplace_back(name, school, rank, position, conference);
                     }
                 }
 
-                if(!playerFound) {
-                    cout << "Player not Found" << endl;
+                if(playerFound) {
+                    int results = search_vec.size();
+                    int first = min(results, 3);
+                    cout << "--" << "First " << first << " Results for: \"" << nameSearch << "\"--" << endl;
+                    cout << "(" << results << " results)" << endl;
+                    for(unsigned int i = 0; i < first; i++) {
+                        cout << "Full Name: " << get<0>(search_vec[i]) << endl;
+                        cout << "Overall Rank: " << get<2>(search_vec[i]) << endl;
+                        cout << "Position: " << get<3>(search_vec[i]) << endl;
+                        cout << "School: " << get<1>(search_vec[i]) << endl;
+                        cout << "Conference: " << get<4>(search_vec[i]) << endl << endl;
+                    }
+
+                    cout << "Show All Results?" << endl;
+                    cout << "1. Yes" << endl;
+                    cout << "2. No" << endl;
+                    string moreInput;
+                    getline(cin, moreInput);
+                    if(stoi(moreInput) != 1 and stoi(moreInput) != 2) {
+                        cout << "Invalid Input" << endl << endl;
+                    }
+                    else if(stoi(moreInput) == 1) {
+                        for(auto i : search_vec) {
+                            cout << "Full Name: " << get<0>(i) << endl;
+                            cout << "Overall Rank: " << get<2>(i) << endl;
+                            cout << "Position: " << get<3>(i) << endl;
+                            cout << "School: " << get<1>(i) << endl;
+                            cout << "Conference: " << get<4>(i) << endl << endl;
+                        }
+                    }
+                    else if(stoi(moreInput) == 2) {
+                        continue;
+                    }
+                }
+                else {
+                    cout << "Name not Found" << endl;
                 }
             }
             else if(stoi(searchInput) == 2) {
@@ -398,8 +444,8 @@ int main()
                 if (rankNum <= 100000 && rankNum > 0) {
                     cout << "Player at Rank " << rankSearch << ":" << endl;
                     cout << "Name: " << get<0>(qsPlayers[rankNum - 1]) << endl;
-                    cout << "School: " << get<1>(qsPlayers[rankNum - 1]) << endl;
                     cout << "Position: " << get<3>(qsPlayers[rankNum - 1]) << endl;
+                    cout << "School: " << get<1>(qsPlayers[rankNum - 1]) << endl;
                     cout << "Conference: " << get<4>(qsPlayers[rankNum - 1]) << endl << endl;
 
                 }
@@ -410,14 +456,18 @@ int main()
             else if(stoi(searchInput) == 3) {
                 continue;
             }
+            else {
+                cout << "Invalid Input" << endl << endl;
+            }
         }
+
         else if (stoi(input_char) == 6){
             break;
         }
+
         else{
             cout << "Invalid Input" << endl << endl;
         }
-
     }
 
     /*std::cout << msTime << " " << msPlayers.size() << "\n";
