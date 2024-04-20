@@ -396,10 +396,9 @@ int main()
                 }
 
                 if(playerFound) {
-                    int results = search_vec.size();
-                    int first = min(results, 3);
+                    unsigned int first = min(search_vec.size(), (unsigned int)3);
                     cout << "--" << "First " << first << " Results for: \"" << nameSearch << "\"--" << endl;
-                    cout << "(" << results << " results)" << endl;
+                    cout << "(" << search_vec.size() << " results)" << endl;
                     for(unsigned int i = 0; i < first; i++) {
                         cout << "Full Name: " << get<0>(search_vec[i]) << endl;
                         cout << "Overall Rank: " << get<2>(search_vec[i]) << endl;
