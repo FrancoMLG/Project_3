@@ -170,7 +170,7 @@ int main()
     float msTime, qsTime;
     std::ifstream inFile;
     std::stringstream inLine;
-    inFile.open("../playerList.txt");
+    inFile.open("playerList.txt");
     while(std::getline(inFile, line))
     {
         inLine.clear();
@@ -369,7 +369,8 @@ int main()
             cout << "Search by:" << endl;
             cout << "1. By Name" << endl;
             cout << "2. By Rank" << endl;
-            cout << "3. Back to Main Menu" << endl;
+            cout << "3. By School" << endl;
+            cout << "4. Back to Main Menu" << endl;
 
             string searchInput;
             getline(cin, searchInput);
@@ -453,6 +454,64 @@ int main()
                 }
             }
             else if(stoi(searchInput) == 3) {
+                string schoolSearch;
+                std::vector<std::tuple<std::string, std::string, int, std::string, std::string>> search_vec;
+                bool schoolFound = false;
+
+                cout << "Search for a School:" << endl;
+                getline(cin, schoolSearch);
+
+                for(auto i : qsPlayers) {
+                    if(searchName(schoolSearch, get<1>(i))) {
+                        schoolFound = true;
+                        name = get<0>(i);
+                        school = get<1>(i);
+                        rank = get<2>(i);
+                        position = get<3>(i);
+                        conference = get<4>(i);
+
+                        search_vec.emplace_back(name, school, rank, position, conference);
+                    }
+                }
+                if(schoolFound) {
+                    unsigned int first = min(search_vec.size(), (unsigned int)3);
+                    cout << "--First " << first << " Results for: \"" << schoolSearch << "\"" << endl;
+                    cout << "(" << search_vec.size() << " results)" << endl;
+                    for(unsigned int i = 0; i < first; i++) {
+                        cout << "Full Name: " << get<0>(search_vec[i]) << endl;
+                        cout << "Overall Rank: " << get<2>(search_vec[i]) << endl;
+                        cout << "Position: " << get<3>(search_vec[i]) << endl;
+                        cout << "School: " << get<1>(search_vec[i]) << endl;
+                        cout << "Conference: " << get<4>(search_vec[i]) << endl << endl;
+                    }
+
+                    cout << "Show All Results?" << endl;
+                    cout << "1. Yes" << endl;
+                    cout << "2. No" << endl;
+                    string moreInput;
+                    getline(cin, moreInput);
+
+                    if(stoi(moreInput) != 1 && stoi(moreInput) != 2) {
+                        cout << "Invalid Input" << endl << endl;
+                    }
+                    else if(stoi(moreInput) == 1) {
+                        for(auto i : search_vec) {
+                            cout << "Full Name: " << get<0>(i) << endl;
+                            cout << "Overall Rank: " << get<2>(i) << endl;
+                            cout << "Position: " << get<3>(i) << endl;
+                            cout << "School: " << get<1>(i) << endl;
+                            cout << "Conference: " << get<4>(i) << endl << endl;
+                        }
+                    }
+                    else if(stoi(moreInput) == 2) {
+                        continue;
+                    }
+                }
+                else {
+                    cout << "School Not Found" << endl;
+                }
+            }
+            else if(stoi(searchInput) == 4) {
                 continue;
             }
             else {
