@@ -5,6 +5,7 @@
 #include <fstream>
 #include <chrono>
 #include <string>
+#include <thread>
 using namespace std;
 
 //I used a YouTube video to help me with the timer. https://www.youtube.com/watch?v=oEx5vGNFrLk&list=WL&index=8&t=512s
@@ -144,7 +145,7 @@ void quickSort(std::vector<std::tuple<std::string, std::string, int, std::string
     }
 }
 
-bool searchName(string name1, string name2) {
+bool searchName(const string& name1, const string& name2) {
     unsigned int len1 = name1.size();
     unsigned int len2 = name2.size();
     if(len2 >= len1) {
@@ -760,5 +761,6 @@ int main()
             cout << "Invalid input" << endl << endl;
         }
     }
+    std::this_thread::sleep_for(1.5s);
     return 0;
 }
