@@ -450,7 +450,7 @@ int main()
                     }
                     catch(...)
                     {
-                        cout << "Invalid input" << "\n";
+                        cout << "Invalid input" << endl;
                         continue;
                     }
                     if(stoi(moreInput) != 1 and stoi(moreInput) != 2) {
@@ -485,7 +485,7 @@ int main()
                 }
                 catch(...)
                 {
-                    cout << "Invalid input" << "\n";
+                    cout << "Invalid input" << endl << endl;
                     continue;
                 }
                 if(stoi(numPlayers) == 1)
@@ -499,7 +499,7 @@ int main()
                     }
                     catch(...)
                     {
-                        cout << "Invalid input" << "\n";
+                        cout << "Invalid input" << endl << endl;
                         continue;
                     }
 
@@ -520,7 +520,7 @@ int main()
                 {
                     string topPlayers;
                     int numTop;
-                    cout << "How many players do you want to see?" << "\n";
+                    cout << "How many players do you want to see?" << endl;
                     getline(cin, topPlayers);
                     try
                     {
@@ -528,7 +528,7 @@ int main()
                     }
                     catch(...)
                     {
-                        cout << "Invalid input" << "\n";
+                        cout << "Invalid input" << endl << endl;
                         continue;
                     }
                     unsigned int first = min((unsigned int) qsPlayers.size(), (unsigned int)numTop);
@@ -552,7 +552,7 @@ int main()
                     }
                     catch(...)
                     {
-                        cout << "Invalid input" << "\n";
+                        cout << "Invalid input" << endl << endl;
                         continue;
                     }
                     if(stoi(moreInput) != 1 and stoi(moreInput) != 2) {
@@ -573,7 +573,7 @@ int main()
                 }
                 else
                 {
-                    cout << "Invalid input" << "\n";
+                    cout << "Invalid input" << endl << endl;
                     continue;
                 }
             }
@@ -611,7 +611,7 @@ int main()
                     }
                     catch(...)
                     {
-                        cout << "Invalid input" << "\n";
+                        cout << "Invalid input" << endl;
                         continue;
                     }
                     unsigned int first = min((unsigned int) search_vec.size(), (unsigned int)numTop);
@@ -636,7 +636,7 @@ int main()
                     }
                     catch(...)
                     {
-                        cout << "Invalid input" << "\n";
+                        cout << "Invalid input" << endl;
                         continue;
                     }
 
@@ -694,7 +694,7 @@ int main()
                     }
                     catch(...)
                     {
-                        cout << "Invalid input" << "\n";
+                        cout << "Invalid input" << endl;
                         continue;
                     }
                     unsigned int first = min((unsigned int) search_vec.size(), (unsigned int)numTop);
