@@ -377,7 +377,7 @@ int main()
             cout << "1. By Name" << endl;
             cout << "2. By Rank" << endl;
             cout << "3. By School" << endl;
-            cout << "4. By conference" << endl;
+            cout << "4. By Conference" << endl;
             cout << "5. Back to Main Menu" << endl;
 
             string searchInput;
@@ -476,7 +476,8 @@ int main()
             else if(stoi(searchInput) == 2)
             {
                 string numPlayers;
-                cout << "1. Get a single player" << "\n" << "2. Get multiple players" << "\n";
+                cout << "1. Get a Single Player" << endl;
+                cout << "2. Get Multiple Players" << endl;
                 getline(cin, numPlayers);
                 try
                 {
@@ -531,8 +532,7 @@ int main()
                         continue;
                     }
                     unsigned int first = min((unsigned int) qsPlayers.size(), (unsigned int)numTop);
-                    cout << "--" << "First " << first << " Results for top: " << first << "\"--" << endl;
-                    cout << "(" << first << " results)" << endl;
+                    cout << "--Top " << first << " Players-- " << endl;
                     for(unsigned int i = 0; i < first; i++) {
                         cout << "Full Name: " << get<0>(qsPlayers[i]) << endl;
                         cout << "Overall Rank: " << get<2>(qsPlayers[i]) << endl;
@@ -615,7 +615,7 @@ int main()
                         continue;
                     }
                     unsigned int first = min((unsigned int) search_vec.size(), (unsigned int)numTop);
-                    cout << "--First " << first << " Results for: \"" << schoolSearch << "\"" << endl;
+                    cout << "--First " << first << " Results for: \"" << schoolSearch << "\"--" << endl;
                     cout << "(" << search_vec.size() << " results)" << endl;
                     for(unsigned int i = 0; i < first; i++) {
                         cout << "Full Name: " << get<0>(search_vec[i]) << endl;
@@ -686,7 +686,7 @@ int main()
                 {
                     string numPlayers;
                     int numTop;
-                    cout << "How many players do you want to see?" << "\n";
+                    cout << "How many players do you want to see?" << endl;
                     getline(cin, numPlayers);
                     try
                     {
@@ -698,7 +698,7 @@ int main()
                         continue;
                     }
                     unsigned int first = min((unsigned int) search_vec.size(), (unsigned int)numTop);
-                    cout << "--First " << first << " Results for: \"" << conferenceSearch << "\"" << endl;
+                    cout << "--First " << first << " Results for: \"" << conferenceSearch << "\"--" << endl;
                     cout << "(" << search_vec.size() << " results)" << endl;
                     for(unsigned int i = 0; i < first; i++) {
                         cout << "Full Name: " << get<0>(search_vec[i]) << endl;
